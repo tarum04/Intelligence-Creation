@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Request Dataset</title>
+    <link rel="stylesheet" href="Request_dataset.css">
+</head>
+<body>
+    <div class="sidebar">
+        <h1>Intellition</h1>
+        <ul id="sidebar-menu">
+            <li class="active" data-page="dashboard.html">Dashboard</li>
+            <li data-page="dataentry.html">Data Entry</li>
+            <li data-page="modeldata.html">Model Data</li>
+            <li class="has-dropdown" id="request-menu">
+                Request
+                <ul class="dropdown" id="request-dropdown" style="display: none;">
+                    <li data-page="requestdataset.html">Request Dataset</li>
+                    <li data-page="confirmation.html">Confirmation</li>
+                    <li data-page="history.html">History</li>
+                </ul>
+            </li>
+        </ul>
+        <div class="logout" data-page="logout.html">Logout</div>
+    </div>
+
+    <div class="main-content">
+        <div class="header">
+            <div class="search">
+                <img src="search-removebg-preview.png" alt="Search" width="24" height="24">
+                <input type="text" placeholder="Search...">
+            </div>
+            <div class="profile-menu">
+                <div>Hai, Admin</div>
+                <img src="icon_profil-removebg-preview.png" alt="Profile">
+                <div class="profile-dropdown">
+                    <a href="#">Profile</a>
+                </div>
+            </div>
+        </div>
+        <div class="content">
+            <h2>Request Dataset</h2>
+            <div class="form-group">
+                <label for="description-problem">Description problem</label>
+                <input type="text" id="description-problem">
+            </div>
+            <div class="form-group">
+                <label for="description-target">Description Target</label>
+                <input type="text" id="description-target">
+            </div>
+            <div class="form-group">
+                <label for="description-features">Description Features</label>
+                <input type="text" id="description-features">
+            </div>
+            <div class="form-group-inline">
+                <div class="form-group">
+                    <label for="category">Category</label>
+                    <select id="category">
+                        <option>--Category--</option>
+                        <option value="regresi">Regresi</option>
+                        <option value="klasifikasi">Klasifikasi</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="start-date">Start Date</label>
+                    <input type="date" id="start_" required />
+                </div>
+                <div class="form-group">
+                    <label for="end-date">End Date</label>
+                    <input type="date" id="end_" required />
+                </div>
+                <div class="form-group">
+                    <label for="status">Status</label>
+                    <select id="status">
+                        <option>--Status--</option>
+                        <option value="ongoing">On-going</option>
+                        <option value="success">Success</option>
+                        <option value="failed">Failed</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="notes">Notes</label>
+                <textarea id="notes" rows="5" placeholder="Masukan Notes Anda Disini"></textarea>
+            </div>
+            <div class="form-actions">
+                <button class="btn-cancel">Cancel</button>
+                <button class="btn-save">Save Changes</button>
+            </div>
+        </div>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const menuItems = document.querySelectorAll('.sidebar li:not(.has-dropdown)');
+            const dropdownMenu = document.getElementById('request-menu');
+            const requestDropdown = document.getElementById('request-dropdown');
+            const requestDataset = document.querySelector('[data-page="requestdataset.html"]');
+            const confirmPage = document.querySelector('[data-page="confirmation.html"]');
+            const historyPage = document.querySelector('[data-page="history.html"]');
+            const logout = document.querySelector('.logout');
+            const saveButton = document.querySelector('.btn-save');
+            const cancelButton = document.querySelector('.btn-cancel');
+            const notes = document.getElementById('notes');
+
+            menuItems.forEach(item => {
+                item.addEventListener('click', function () {
+                    menuItems.forEach(i => i.classList.remove('active'));
+                    item.classList.add('active');
+                    const page = item.getAttribute('data-page');
+                    if (page) {
+                        window.location.href = page;
+                    }
+                });
+            });
+
+            dropdownMenu.addEventListener('click', function () {
+                requestDropdown.style.display = requestDropdown.style.display === 'none' ? 'block' : 'none';
+            });
+
+            document.querySelectorAll('.sidebar .has-dropdown .dropdown li').forEach(subItem => {
+                subItem.addEventListener('click', function (e) {
+                    const page = subItem.getAttribute('data-page');
+                    if (page) {
+                        window.location.href = page;
+                    }
+                    e.stopPropagation();
+                });
+            });
+
+            document.addEventListener('click', function (e) {
+                if (!dropdownMenu.contains(e.target)) {
+                    requestDropdown.style.display = 'none';
+                }
+            });
+
+            if (requestDataset) {
+                requestDataset.addEventListener('click', function () {
+                    window.location.href = 'Request dataset.html';
+                });
+            }
+
+            if (confirmPage) {
+                confirmPage.addEventListener('click', function () {
+                    window.location.href = 'confirm.html';
+                });
+            }
+
+            if (historyPage) {
+                historyPage.addEventListener('click', function () {
+                    window.location.href = 'History.html';
+                });
+            }
+
+            if (logout) {
+                logout.addEventListener('click', function () {
+                    window.location.href = 'logout.html';
+                });
+            }
+
+            saveButton.addEventListener('click', function () {
+                const descriptionProblem = document.getElementById('description-problem').value;
+                const descriptionTarget = document.getElementById('description-target').value;
+                const descriptionFeatures = document.getElementById('description-features').value;
+                const category = document.getElementById('category').value;
+                const startDate = document.getElementById('start_').value;
+                const endDate = document.getElementById('end_').value;
+                const status = document.getElementById('status').value;
+                const notesValue = notes.value;
+
+                console.log({
+                    descriptionProblem,
+                    descriptionTarget,
+                    descriptionFeatures,
+                    category,
+                    startDate,
+                    endDate,
+                    status,
+                    notesValue
+                });
+
+                fetch('your-server-endpoint', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        descriptionProblem,
+                        descriptionTarget,
+                        descriptionFeatures,
+                        category,
+                        startDate,
+                        endDate,
+                        status,
+                        notes: notesValue
+                    })
+                }).then(data => {
+                    console.log('Success:', data);
+                    window.location.href = 'history.html';
+                }).catch((error) => {
+                    console.error('Error:', error);
+                    alert('There was an error saving your data. Please try again.');
+                });
+            });
+
+            cancelButton.addEventListener('click', function () {
+                window.location.href = 'dashboard.html';
+            });
+        });
+    </script>
+</body>
+</html>

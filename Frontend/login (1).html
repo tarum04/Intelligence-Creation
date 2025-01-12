@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Page</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            display: flex;
+            height: 100vh;
+        }
+        .container {
+            display: flex;
+            flex: 1;
+        }
+        .left {
+            flex: 1;
+            background-color: #1A0732;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            padding: 20px;
+        }
+        .left h1 {
+            font-size: 2.5rem;
+            margin: 0;
+        }
+        .left p {
+            font-size: 1rem;
+            margin: 5px 0;
+        }
+        .right {
+            flex: 1;
+            background-color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .login-box {
+            max-width: 300px;
+            width: 100%;
+            text-align: center;
+        }
+        .login-box h2 {
+            margin-bottom: 10px;
+        }
+        .login-box form {
+            display: flex;
+            flex-direction: column;
+        }
+        .login-box input {
+            padding: 15px;
+            margin: 5px 0;
+            border: 1px solid #ddd;
+            border-radius: 25px;
+            font-size: 14px;
+            outline: none;
+        }
+        .login-box button {
+            padding: 15px;
+            margin: 5px 0;
+            border: none;
+            border-radius: 25px;
+            background-color: #2F54EB;
+            color: white;
+            font-size: 14px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .login-box button:hover {
+            background-color: #1A44D1;
+        }
+        .login-box a {
+            color: #919396;
+            text-decoration: none;
+            font-size: 14px;
+            margin-top: 10px;
+        }
+        .icon {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+        .icon svg {
+            margin-right: 10px;
+        }
+    </style>
+    <script>
+        function handleLogin(event) {
+            event.preventDefault();
+            // Logika autentikasi dapat ditambahkan di sini
+
+            // Mengarahkan ke halaman berikutnya setelah login berhasil
+            window.location.href = "Dashboard.html";
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <div class="left">
+            <h1>Intellition</h1>
+            <p>The most popular model builder</p>
+        </div>
+        <div class="right">
+            <div class="login-box">
+                <h2>Hello Again!</h2>
+                <p>Welcome Back</p>
+                <form onsubmit="handleLogin(event)">
+                    <div class="icon">
+                        <svg width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M12 12.713l11.985-7.326c-.014-.018-11.97-7.387-11.97-7.387l-11.972 7.39 11.957 7.323zm11.985-1.868l-4.978 3.044v4.996h-14.014v-4.996l-4.978-3.044v10.155c0 .553.447 1 1 1h20c.553 0 1-.447 1-1v-10.155zm-11.985-9.845l11.97 7.387-11.97 7.326-11.957-7.323 11.957-7.39z"/>
+                        </svg>                        
+                        <input type="email" placeholder="Email Address" required>
+                    </div>
+                    <div class="icon">
+                        <svg width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M12 17c1.1 0 1.99-.9 1.99-2S13.1 13 12 13s-2 .9-2 2 .89 2 2 2zm6-6h-1V8c0-3.31-2.69-6-6-6S5 4.69 5 8v3H4c-1.1 0-2 .9-2 2v9c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2v-9c0-1.1-.9-2-2-2zm-6 0H8V8c0-2.21 1.79-4 4-4s4 1.79 4 4v3z"/>
+                        </svg> 
+                        <input type="password" placeholder="Password" required>
+                    </div>
+                    <button type="submit">Login</button>
+                    <a href="#">Forgot Password</a>
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

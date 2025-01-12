@@ -1,0 +1,12 @@
+from ic_api.models import ReceivedData
+from django.db.models import Count
+
+# Find users with multiple ReceivedData entries
+duplicates = ReceivedData.objects.values('user').annotate(count=Count('user')).filter(count__gt=1)
+
+# Keep only the latest entry for each user
+for dup in duplicates:
+    entries = ReceivedData.objects.filter(user=dup['user']).order_by('-id')
+    entries.exclude(pk=entries.first().pk).delete()
+
+Use this script when you encounter any kind problems when migrate

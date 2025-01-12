@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up</title>
+</head>
+<body>
+    <div class="container">
+        <div class="left-section">
+            <h1>Intellition</h1>
+            <p>The most popular model builder</p>
+        </div>
+        <div class="right-section">
+            <div class="form-container">
+                <h2>Hello!</h2>
+                <p>Sign Up to Get Started</p>
+                <form method="post">
+                    {% csrf_token %}
+                    <div class="input-group">
+                        {{ form.username }}
+                    </div>
+                    <div class="input-group">
+                        {{ form.email }}
+                    </div>
+                    <div class="input-group">
+                        {{ form.password1 }}
+                    </div>
+                    <div class="input-group">
+                        {{ form.password2 }}
+                    </div>
+                    <button type="submit" class="register-button">Register</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+<style>
+    body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background-color: #DFDFDF;
+}
+
+.container {
+    display: flex;
+    width: 80%;
+    height: 70%;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+}
+
+.left-section {
+    background-color: #2e004f;
+    color: #fff;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 40px;
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
+}
+
+.left-section h1 {
+    font-size: 36px;
+    margin-bottom: 20px;
+}
+
+.left-section p {
+    font-size: 18px;
+}
+
+.right-section {
+    background-color: #fff;
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
+}
+
+.form-container {
+    width: 80%;
+    max-width: 400px;
+    text-align: center;
+}
+
+.form-container h2 {
+    font-size: 24px;
+    margin-bottom: 10px;
+}
+
+.form-container p {
+    font-size: 16px;
+    margin-bottom: 20px;
+}
+
+.input-group {
+    margin-bottom: 15px;
+    position: relative;
+}
+
+.input-group input {
+    width: 100%;
+    padding: 15px;
+    border: 1px solid #ccc;
+    border-radius: 30px;
+    font-size: 14px;
+}
+
+.register-button {
+    width: 100%;
+    padding: 15px;
+    border: none;
+    border-radius: 30px;
+    background-color: #3b82f6;
+    color: #fff;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.register-button:hover {
+    background-color: #3366cc;
+}
+
+</style>
+</html>

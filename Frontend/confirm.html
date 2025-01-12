@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Confirmation</title>
+    <link rel="stylesheet" href="Confirm.css">
+</head>
+<body>
+    <div class="sidebar">
+        <h1>Intellition</h1>
+        <ul id="sidebar-menu">
+            <li class="active" data-page="dashboard.html">Dashboard</li>
+            <li data-page="dataentry.html">Data Entry</li>
+            <li data-page="modeldata.html">Model Data</li>
+            <li class="has-dropdown" id="request-menu">
+                Request
+                <ul class="dropdown" id="request-dropdown" style="display: none;">
+                    <li data-page="requestdataset.html">Request Dataset</li>
+                    <li data-page="confirmation.html">Confirmation</li>
+                    <li data-page="history.html">History</li>
+                </ul>
+            </li>
+        </ul>
+        <div class="logout" data-page="logout.html">Logout</div>
+    </div>
+    
+    <div class="main-content">
+        <div class="header">
+            <div class="search">
+                <img src="search-removebg-preview.png" alt="Search" width="24" height="24">
+                <input type="text" placeholder="Search...">
+            </div>
+            <div class="profile-menu">
+                <div>Hai, Admin</div>
+                <img src="icon_profil-removebg-preview.png" alt="Profile">
+                <div class="profile-dropdown">
+                    <a href="#">Profile</a>
+                </div>
+            </div>
+        </div>
+        <div class="content">
+            <h2>Confirmation</h2>
+            <div class="form-group">
+                <label for="status-connection">Status connection</label>
+                <input type="text" id="status-connection" placeholder="Confirm To ...">
+            </div>
+            <div class="form-group-inline">
+                <div class="form-group">
+                    <label for="Status">Status</label>
+                    <select id="Status">
+                        <option>--Status--</option>
+                        <option value="Failed">Failed</option>
+                        <option value="Success">Success</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="notes">Notes</label>
+                <textarea id="notes" rows="5" placeholder="Masukan Notes Anda"></textarea>
+            </div>
+            <div class="form-actions">
+                <button class="btn-cancel">Cancel</button>
+                <button class="btn-save">Save Changes</button>
+            </div>
+        </div>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const menuItems = document.querySelectorAll('.sidebar li:not(.has-dropdown)');
+            const dropdownMenu = document.getElementById('request-menu');
+            const requestDropdown = document.getElementById('request-dropdown');
+            const requestDataset = document.querySelector('[data-page="requestdataset.html"]');
+            const confirmPage = document.querySelector('[data-page="confirmation.html"]');
+            const historyPage = document.querySelector('[data-page="history.html"]');
+            const logout = document.querySelector('.logout');
+            const saveButton = document.querySelector('.btn-save');
+            const cancelButton = document.querySelector('.btn-cancel');
+            const notes = document.getElementById('notes');
+
+            menuItems.forEach(item => {
+                item.addEventListener('click', function () {
+                    menuItems.forEach(i => i.classList.remove('active'));
+                    item.classList.add('active');
+                    const page = item.getAttribute('data-page');
+                    if (page) {
+                        window.location.href = page;
+                    }
+                });
+            });
+
+            dropdownMenu.addEventListener('click', function () {
+                requestDropdown.style.display = requestDropdown.style.display === 'none' ? 'block' : 'none';
+            });
+
+            document.querySelectorAll('.sidebar .has-dropdown .dropdown li').forEach(subItem => {
+                subItem.addEventListener('click', function (e) {
+                    const page = subItem.getAttribute('data-page');
+                    if (page) {
+                        window.location.href = page;
+                    }
+                    e.stopPropagation();
+                });
+            });
+
+            document.addEventListener('click', function (e) {
+                if (!dropdownMenu.contains(e.target)) {
+                    requestDropdown.style.display = 'none';
+                }
+            });
+
+            // Direct navigation for "Request Dataset"
+            if (requestDataset) {
+                requestDataset.addEventListener('click', function () {
+                    window.location.href = 'Request dataset.html';
+                });
+            }
+
+            // Confirm direct navigation
+            if (confirmPage) {
+                confirmPage.addEventListener('click', function () {
+                    window.location.href = 'confirm.html';
+                });
+            }
+
+            if (historyPage) {
+                historyPage.addEventListener('click', function () {
+                    window.location.href = 'History.html';
+                });
+            }
+
+            if (logout) {
+                logout.addEventListener('click', function () {
+                    window.location.href = 'logout.html';
+                });
+            }
+
+            // Save changes and redirect to History
+            saveButton.addEventListener('click', function () {
+                console.log('Save button clicked'); // Debugging statement
+                const statusConnection = document.getElementById('status-connection').value;
+                const status = document.getElementById('Status').value;
+                const notesValue = notes.value;
+
+                console.log('Saving data...'); // Debugging statement
+                console.log({
+                    statusConnection: statusConnection,
+                    status: status,
+                    notes: notesValue
+                }); // Debugging statement
+
+                fetch('your-server-endpoint', { 
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        statusConnection: statusConnection,
+                        status: status,
+                        notes: notesValue
+                    })
+        
+                }).then(data => {
+                    console.log('Success:', data);
+                    window.location.href = 'history.html';
+                }).catch((error) => {
+                    console.error('Error:', error);
+                    alert('There was an error saving your data. Please try again.');
+                });
+            });
+
+            // Cancel button redirects to dashboard
+            cancelButton.addEventListener('click', function () {
+                window.location.href = 'dashboard.html';
+            });
+        });
+    </script>
+</body>
+</html>

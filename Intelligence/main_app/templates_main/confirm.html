@@ -1,0 +1,411 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Confirmation</title>
+</head>
+<body>
+    <div class="sidebar">
+        <h1>Intellition</h1>
+        <ul id="sidebar-menu">
+            <li class="active" data-page="{% url 'home' %}">Dashboard</li>
+
+            <li data-page="{% url 'data-entry' %}">Data Entry</li>
+            <li data-page="{% url 'model-data' %}">Model Data</li>
+            <li class="has-dropdown" id="request-menu">
+                Request
+                <ul class="dropdown" id="request-dropdown" style="display: none;">
+                    <li data-page="{% url 'request-dataset' %}">Request Dataset</li>
+                    <li data-page="{% url 'confirm' %}">Confirmation</li>
+                    <li data-page="{% url 'history' %}">History</li>
+                </ul>
+            </li>
+        </ul>
+        <div class="logout" data-page="{% url 'login' %}">Logout</div>
+    </div>
+    
+    <div class="main-content">
+        <div class="header">
+            <div class="search">
+                <img src="{% static 'img/search-removebg-preview.png' %}" alt="Search" width="24" height="24">
+                <input type="text" placeholder="Search...">
+            </div>
+            <div class="profile-menu">
+                <div>Hai, Admin</div>
+                <img src="{% static 'img/icon_profil-removebg-preview.png' %}" alt="Profile">
+                <div class="profile-dropdown">
+                    <a href="#">Profile</a>
+                </div>
+            </div>
+        </div>
+        <div class="content">
+            <h2>Confirmation</h2>
+            <div class="form-group">
+                <label for="status-connection">Status connection</label>
+                <input type="text" id="status-connection" placeholder="Confirm To ...">
+            </div>
+            <div class="form-group-inline">
+                <div class="form-group">
+                    <label for="Status">Status</label>
+                    <select id="Status">
+                        <option>--Status--</option>
+                        <option value="Failed">Failed</option>
+                        <option value="Success">Success</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="notes">Notes</label>
+                <textarea id="notes" rows="5" placeholder="Masukan Notes Anda"></textarea>
+            </div>
+            <div class="form-actions">
+                <button class="btn-cancel">Cancel</button>
+                <button class="btn-save">Save Changes</button>
+            </div>
+        </div>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const menuItems = document.querySelectorAll('.sidebar li:not(.has-dropdown)');
+            const dropdownMenu = document.getElementById('request-menu');
+            const requestDropdown = document.getElementById('request-dropdown');
+            const requestDataset = document.querySelector('[data-page="requestdataset.html"]');
+            const confirmPage = document.querySelector('[data-page="confirmation.html"]');
+            const historyPage = document.querySelector('[data-page="history.html"]');
+            const logout = document.querySelector('.logout');
+            const saveButton = document.querySelector('.btn-save');
+            const cancelButton = document.querySelector('.btn-cancel');
+            const notes = document.getElementById('notes');
+
+            menuItems.forEach(item => {
+                item.addEventListener('click', function () {
+                    menuItems.forEach(i => i.classList.remove('active'));
+                    item.classList.add('active');
+                    const page = item.getAttribute('data-page');
+                    if (page) {
+                        window.location.href = page;
+                    }
+                });
+            });
+
+            dropdownMenu.addEventListener('click', function () {
+                requestDropdown.style.display = requestDropdown.style.display === 'none' ? 'block' : 'none';
+            });
+
+            document.querySelectorAll('.sidebar .has-dropdown .dropdown li').forEach(subItem => {
+                subItem.addEventListener('click', function (e) {
+                    const page = subItem.getAttribute('data-page');
+                    if (page) {
+                        window.location.href = page;
+                    }
+                    e.stopPropagation();
+                });
+            });
+
+            document.addEventListener('click', function (e) {
+                if (!dropdownMenu.contains(e.target)) {
+                    requestDropdown.style.display = 'none';
+                }
+            });
+
+            // Direct navigation for "Request Dataset"
+            if (requestDataset) {
+                requestDataset.addEventListener('click', function () {
+                    window.location.href = 'Request dataset.html';
+                });
+            }
+
+            // Confirm direct navigation
+            if (confirmPage) {
+                confirmPage.addEventListener('click', function () {
+                    window.location.href = 'confirm.html';
+                });
+            }
+
+            if (historyPage) {
+                historyPage.addEventListener('click', function () {
+                    window.location.href = 'History.html';
+                });
+            }
+
+            if (logout) {
+                logout.addEventListener('click', function () {
+                    window.location.href = 'logout.html';
+                });
+            }
+
+            // Save changes and redirect to History
+            saveButton.addEventListener('click', function () {
+                console.log('Save button clicked'); // Debugging statement
+                const statusConnection = document.getElementById('status-connection').value;
+                const status = document.getElementById('Status').value;
+                const notesValue = notes.value;
+
+                console.log('Saving data...'); // Debugging statement
+                console.log({
+                    statusConnection: statusConnection,
+                    status: status,
+                    notes: notesValue
+                }); // Debugging statement
+
+                fetch('your-server-endpoint', { 
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        statusConnection: statusConnection,
+                        status: status,
+                        notes: notesValue
+                    })
+        
+                }).then(data => {
+                    console.log('Success:', data);
+                    window.location.href = 'history.html';
+                }).catch((error) => {
+                    console.error('Error:', error);
+                    alert('There was an error saving your data. Please try again.');
+                });
+            });
+
+            // Cancel button redirects to dashboard
+            cancelButton.addEventListener('click', function () {
+                window.location.href = 'dashboard.html';
+            });
+        });
+    </script>
+</body>
+<style>
+    body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    display: flex;
+    height: 100vh;
+    background-color: #F5F5F5;
+}
+.sidebar {
+    width: 230px;
+    height: 100vh;
+    background-color: #1A0732;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    padding-top: 20px;
+}
+
+.sidebar img {
+    width: 40px;
+    height: auto;
+}
+.sidebar h1 {
+    font-size: 1.5rem;
+    margin: 0;
+    text-align: center;
+}
+.sidebar ul {
+    list-style: none;
+    padding: 0;
+    width: 100%;
+}
+.sidebar li {
+    padding: 30px 30px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+.sidebar ul li:hover {
+    background-color: #574b90;
+}
+.sidebar .logout {
+    margin-top: auto;
+    padding: 15px 20px;
+    cursor: pointer;
+    text-align: center;
+    background-color: #1A0732;
+    transition: background-color 0.3s;
+}
+.sidebar .logout:hover {
+    background-color: #2F54EB;
+}
+.main-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    background-color: #EFEFEF;
+}
+.header {
+    height: 60px;
+    background-color: #1A0732;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px;
+}
+.header .profile-menu {
+    position: relative;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+}
+.header .profile-menu img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin-left: 10px;
+}
+.header .profile-dropdown {
+    display: none;
+    position: absolute;
+    top: 60px;
+    right: 0;
+    background-color: white;
+    color: black;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    overflow: hidden;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+.header .profile-dropdown.show {
+    display: block;
+}
+.header .profile-dropdown a {
+    display: block;
+    padding: 10px 20px;
+    text-decoration: none;
+    color: rgb(255, 255, 255);
+    background-color: #1A0732;
+}
+.header .profile-dropdown a:hover {
+    background-color: #fffefe;
+    color: #1A0732;
+}
+.header .search {
+    display: flex;
+    align-items: center;
+}
+.header .search svg {
+    margin-right: 10px;
+}
+.header input {
+    padding: 10px;
+    border: none;
+    border-radius: 20px;
+    outline: none;
+    width: 400px;
+    height: 20px;
+    background-color: #fff;
+}
+.content {
+    flex: 1;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    background-color: white;
+    border-radius: 10px;
+    margin: 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    width: 90%;
+    margin-left: 3%;
+}
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+.form-group label {
+    font-weight: bold;
+}
+.form-group input, .form-group select, .form-group textarea {
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    width: 90%;
+}
+.form-group textarea {
+    resize: none;
+    background-color: #D9D9D9;
+    width: 950px;
+    height: 80px;
+}
+.form-group-inline {
+    display: flex;
+    gap: 20px;
+    justify-content: space-between;
+}
+.form-group-inline .form-group {
+    flex: 1;
+}
+.form-group-photo {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border: 2px dashed #ddd;
+    border-radius: 10px;
+    padding: 20px;
+    text-align: center;
+    margin-top: 30px;
+}
+.form-group-photo img {
+    width: 50px;
+    height: 50px;
+    margin-bottom: 10px;
+}
+.form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 30px;
+    margin-top: 13%;
+}
+.form-actions button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+.form-actions .btn-cancel {
+    background-color: #ddd;
+    color: black;
+}
+.form-actions .btn-save {
+    background-color: #2F54EB;
+    color: white;
+}
+.form-actions .btn-cancel:hover {
+    background-color: #ccc;
+}
+.form-actions .btn-save:hover {
+    background-color: #1A44D1;
+}
+input {
+    background-color: #D9D9D9;
+}
+input#status-connection{
+   width: 950px; 
+}
+label{
+    margin-top: 20px;
+    padding: 10px;
+}
+h2{
+    margin-top: -10px;
+    background-color:#1A0732 ;
+    color: #fff;
+    height: 50px;
+    border-radius: 5px;
+}
+
+select#Status {
+    width: 200px;
+    color: black;
+}
+img{
+    width: 40px;
+    height: 40px;
+    
+}
+</style>
+</html>

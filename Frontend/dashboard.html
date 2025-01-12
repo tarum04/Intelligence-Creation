@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="Dashboard.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="sidebar">
+        <h1>Intellition</h1>
+        <ul id="sidebar-menu">
+            <li class="active" data-page="dashboard.html">Dashboard</li>
+            <li data-page="dataentry.html">Data Entry</li>
+            <li data-page="modeldata.html">Model Data</li>
+            <li class="has-dropdown">
+                Request
+                <ul class="dropdown">
+                    <li data-page="requestdataset.html">Request Dataset</li>
+                    <li data-page="confirmation.html">Confirmation</li>
+                    <li data-page="History.html">History</li>
+                </ul>
+            </li>
+        </ul>
+        <div class="logout" data-page="logout.html">Logout</div>
+    </div>
+    <div class="main-content">
+        <div class="header">
+            <div class="search">
+                <img src="search-removebg-preview.png" alt="Search" width="24" height="24">
+                <input type="text" placeholder="Search...">
+            </div>
+            <div class="profile">
+                <div>Hai, Admin</div>
+                <img src="icon_profil-removebg-preview.png" alt="Profile" id="profile-pic">
+                <div class="popup" id="profile-popup">
+                    <button id="update-profile-btn">Profile</button>
+                </div>
+            </div>
+        </div>
+        <div class="content">
+            <div class="activity">
+                <div class="chart">
+                    <h2>Weekly Activity</h2>
+                    <canvas id="barChart"></canvas>
+                </div>
+                <div class="pie-chart">
+                    <h2>Problem for AI</h2>
+                    <canvas id="pieChart"></canvas>
+                </div>
+            </div>
+            <div class="table-container">
+                <h2 id="creation-heading">Creation</h2>
+                <div class="controls">
+                    <select>
+                        <option>Select column</option>
+                    </select>
+                    <input type="text" placeholder="Search list...">
+                    <button id="add-new-btn">Add new</button>
+                </div>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Problem</th>
+                            <th>Label</th>
+                            <th>Features</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="data-table-body">
+                        <!-- Data rows will be inserted here by JavaScript -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="delete-popup" id="delete-popup">
+        <p>Are you sure you want to delete this dataset?</p>
+        <div class="popup-actions">
+            <button class="cancel-btn" id="cancel-delete">Cancel</button>
+            <button class="confirm-btn" id="confirm-delete">Delete</button>
+        </div>
+    </div>
+    <script>
+        // Bar chart
+        const ctxBar = document.getElementById('barChart').getContext('2d');
+        const barChart = new Chart(ctxBar, {
+            type: 'bar',
+            data: {
+                labels: ['Sat', 'Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri'],
+                datasets: [{
+                    label: 'Entry',
+                    data: [4, 3, 2, 4, 1, 4, 3],
+                    backgroundColor: '#1A0732',
+                    borderRadius: 20,
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        max: 5
+                    }
+                }
+            }
+        });
+
+        // Pie chart
+        const ctxPie = document.getElementById('pieChart').getContext('2d');
+        const pieChart = new Chart(ctxPie, {
+            type: 'pie',
+            data: {
+                labels: ['Entertainment', 'Bill Expense', 'Investment', 'Others'],
+                datasets: [{
+                    data: [30, 15, 20, 35],
+                    backgroundColor: ['#2d2d59', '#f28e2b', '#d45ff5', '#223df5'],
+                }]
+            },
+            options: {
+                plugins: {
+                    legend: {
+                        position: 'right',
+                    }
+                }
+            }
+        });
+
+        // Dataset
+        let dataset = [
+            { id: 1, problem: "Prediksi Harga", label: "# Harga", features: "Rumah", status: "Success" },
+        ];
+
+        // Function to render the dataset into the table
+        const renderTable = (data) => {
+            const tableBody = document.getElementById('data-table-body');
+            tableBody.innerHTML = ''; // Clear existing rows
+            data.forEach(item => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${item.id.toString().padStart(2, '0')}</td>
+                    <td class="problem" data-problem="${item.problem}">${item.problem}</td>
+                    <td>${item.label}</td>
+                    <td>${item.features}</td>
+                    <td>${item.status}</td>
+                    <td class="table-actions">
+                        <button class="edit-btn" data-id="${item.id}">Edit</button>
+                        <button class="delete-btn" data-id="${item.id}">Delete</button>
+                    </td>
+                `;
+                tableBody.appendChild(row);
+            });
+
+            // Add event listeners for Edit and Delete buttons
+            document.querySelectorAll('.edit-btn').forEach(button => {
+                button.addEventListener('click', event => {
+                    const id = event.target.getAttribute('data-id');
+                    // Redirect to edit page
+                    window.location.href = `DataEntry.html?id=${id}`;
+                });
+            });
+
+            document.querySelectorAll('.delete-btn').forEach(button => {
+                button.addEventListener('click', event => {
+                    const id = event.target.getAttribute('data-id');
+                    showDeletePopup(id);
+                });
+            });
+
+            // Add event listener for problem click
+            document.querySelectorAll('.problem[data-problem="Prediksi Harga"]').forEach(problem => {
+                problem.addEventListener('click', () => {
+                    window.location.href = 'popup_cetak.html';
+                });
+            });
+        };
+
+        // Show delete popup
+        const showDeletePopup = (id) => {
+            const deletePopup = document.getElementById('delete-popup');
+            deletePopup.style.display = 'block';
+
+            // Confirm delete button event
+            const confirmDeleteBtn = document.getElementById('confirm-delete');
+            confirmDeleteBtn.onclick = () => {
+                dataset = dataset.filter(item => item.id !== parseInt(id));
+                renderTable(dataset);
+                deletePopup.style.display = 'none';
+            };
+
+            // Cancel delete button event
+            const cancelDeleteBtn = document.getElementById('cancel-delete');
+            cancelDeleteBtn.onclick = () => {
+                deletePopup.style.display = 'none';
+            };
+        };
+
+        // Initial render of the table
+        renderTable(dataset);
+
+        // Add new button event listener
+        document.getElementById('add-new-btn').addEventListener('click', () => {
+            window.location.href = 'DataEntry.html'; // Redirect to data entry page
+        });
+
+        // Profile picture click event
+        const profilePic = document.getElementById('profile-pic');
+        const profilePopup = document.getElementById('profile-popup');
+        const updateProfileBtn = document.getElementById('update-profile-btn');
+
+        profilePic.addEventListener('click', () => {
+            profilePopup.style.display = profilePopup.style.display === 'block' ? 'none' : 'block';
+        });
+
+        updateProfileBtn.addEventListener('click', () => {
+            window.location.href = 'updateprofile.html';
+        });
+
+        // Close popup if clicked outside
+        document.addEventListener('click', (event) => {
+            if (!profilePic.contains(event.target) && !profilePopup.contains(event.target)) {
+                profilePopup.style.display = 'none';
+            }
+        });
+
+        // Sidebar navigation
+        document.querySelectorAll('.sidebar ul li, .sidebar .logout').forEach(item => {
+            item.addEventListener('click', event => {
+                const page = event.currentTarget.getAttribute('data-page');
+                if (page) {
+                    window.location.href = page;
+                }
+            });
+        });
+
+        // Dropdown toggle
+        document.querySelectorAll('.sidebar .has-dropdown').forEach(item => {
+            item.addEventListener('click', () => {
+                const dropdown = item.querySelector('.dropdown');
+                dropdown.style.display = dropdown.style.display === 'flex' ? 'none' : 'flex';
+            });
+        });
+
+        // Request Dataset direct navigation
+        document.querySelector('[data-page="requestdataset.html"]').addEventListener('click', (event) => {
+            window.location.href = 'Request dataset.html';
+        });
+
+        // Confirm direct navigation
+        document.querySelector('[data-page="confirmation.html"]').addEventListener('click', (event) => {
+            window.location.href = 'Confirm.html';
+        });
+        // Confirm direct navigation
+        document.querySelector('[data-page="History.html"]').addEventListener('click', (event) => {
+            window.location.href = 'History.html';
+        });
+
+        // Creation direct navigation
+        document.getElementById('creation-heading').addEventListener('click', () => {
+            window.location.href = 'Modeldata_Creation.html';
+        });
+    </script>
+</body>
+</html>

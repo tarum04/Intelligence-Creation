@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Creation</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="Creation.css">
+</head>
+<body>
+    <div class="sidebar">
+        <h1>Intellition</h1>
+        <ul id="sidebar-menu">
+            <li class="active" data-page="dashboard.html">Dashboard</li>
+            <li data-page="dataentry.html">Data Entry</li>
+            <li data-page="modeldata.html">Model Data</li>
+            <li class="has-dropdown">
+                <span>Request</span>
+                <ul class="dropdown">
+                    <li data-page="requestdataset.html">Request Dataset</li>
+                    <li data-page="confirmation.html">Confirmation</li>
+                </ul>
+            </li>
+        </ul>
+        <div class="logout" data-page="logout.html">Logout</div>
+    </div>
+    <div class="main-content">
+        <div class="header">
+            <div class="search">
+                <img src="search-removebg-preview.png" alt="Search" width="24" height="24">
+                <input type="text" placeholder="Search...">
+            </div>
+            <div class="profile">
+                <div>Hai, Admin</div>
+                <img src="icon_profil-removebg-preview.png" alt="Profile" id="profile-pic">
+                <div class="popup" id="profile-popup">
+                </div>
+            </div>
+        </div>
+        <div class="section-container">
+            <div class="performance">
+                <h3>Performance</h3>
+                <div class="chart-container">
+                    <canvas id="performanceChart" width="400" height="200"></canvas>
+                </div>
+            </div>
+            <div class="data-impactful">
+                <h3>Data Impactful to Model</h3>
+                <table>
+                    <tr>
+                        <th>#</th>
+                        <th>Name</th>
+                        <th>Percentage</th>
+                        <th>%</th>
+                    </tr>
+                    <tr>
+                        <td>01</td>
+                        <td>Harga rumah</td>
+                        <td>
+                            <div class="progress-bar" style="background-color: #f2a654; width: 46%; height: 20px;"></div>
+                        </td>
+                        <td>46%</td>
+                    </tr>
+                    <tr>
+                        <td>02</td>
+                        <td>Kamar Tidur</td>
+                        <td>
+                            <div class="progress-bar" style="background-color: #b8e1dd; width: 17%; height: 20px;"></div>
+                        </td>
+                        <td>17%</td>
+                    </tr>
+                    <tr>
+                        <td>03</td>
+                        <td>Kamar mandi</td>
+                        <td>
+                            <div class="progress-bar" style="background-color: #7bc8f6; width: 19%; height: 20px;"></div>
+                        </td>
+                        <td>19%</td>
+                    </tr>
+                    <tr>
+                        <td>04</td>
+                        <td>Luas tanah</td>
+                        <td>
+                            <div class="progress-bar" style="background-color: #e8c7e0; width: 29%; height: 20px;"></div>
+                        </td>
+                        <td>29%</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <div class="model-details">
+            <div class="info">
+                <img src="icon_rumah-removebg-preview.png" alt="House Icon">
+                <h3>Prediksi Harga Rumah</h3>
+                <p>Anka Fayiz</p>
+                <p>06-04-2024 16.38 - 06-05-2024 16.38</p>
+                <div class="labels">
+                    <div class="label">Harga</div>
+                    <div class="label">Kamar Tidur</div>
+                </div>
+                <p>Model digunakan untuk memprediksi harga rumah, berdasarkan hasil dari akurasi model, data perlu diperbanyak</p>
+            </div>
+            <div class="status">
+                <p class="success">Success</p>
+            </div>
+        </div>
+    </div>
+    <script>
+        var ctx = document.getElementById('performanceChart').getContext('2d');
+        var performanceChart = new Chart(ctx, {
+            type: 'doughnut',
+            data: {
+                labels: ['Low', 'Best'],
+                datasets: [{
+                    data: [75, 25],
+                    backgroundColor: ['#3c1c67', '#e8e6f2'],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                cutoutPercentage: 80,
+                rotation: -1.5 * Math.PI,
+                circumference: 1.5 * Math.PI,
+                tooltips: { enabled: false },
+                hover: { mode: null },
+                plugins: {
+                    datalabels: { display: false }
+                }
+            }
+        });
+
+        // Dropdown toggle
+        document.querySelectorAll('.has-dropdown > span').forEach(function(item) {
+            item.addEventListener('click', function() {
+                const parent = this.parentElement;
+                parent.classList.toggle('active');
+            });
+        });
+
+        // Navigation
+        document.querySelectorAll('#sidebar-menu li').forEach(function(item) {
+            item.addEventListener('click', function() {
+                const page = this.getAttribute('data-page');
+                if (page) {
+                    window.location.href = page;
+                }
+            });
+        });
+
+        // Dropdown item navigation
+        document.querySelectorAll('.dropdown li').forEach(function(item) {
+            item.addEventListener('click', function(event) {
+                event.stopPropagation(); // Prevent event bubbling to parent
+                const page = this.getAttribute('data-page');
+                if (page) {
+                    window.location.href = page;
+                }
+            });
+        });
+    </script>
+</body>
+</html>

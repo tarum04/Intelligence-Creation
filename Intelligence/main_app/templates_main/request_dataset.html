@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Request Dataset</title>
+    <link rel="stylesheet" href="Request_dataset.css">
+</head>
+<body>
+    <div class="sidebar">
+        <h1>Intellition</h1>
+        <ul id="sidebar-menu">
+            <li class="active" data-page="{% url 'home' %}">Dashboard</li>
+            <li data-page="{% url 'data-entry' %}">Data Entry</li>
+            <li data-page="{% url 'model-data' %}">Model Data</li>
+            <li class="has-dropdown" id="request-menu">
+                Request
+                <ul class="dropdown" id="request-dropdown" style="display: none;">
+                    <li data-page="{% url 'request-dataset' %}">Request Dataset</li>
+                    <li data-page="{% url 'confirm' %}">Confirmation</li>
+                    <li data-page="{% url 'history' %}">History</li>
+                </ul>
+            </li>
+        </ul>
+        <div class="logout" data-page="{% url 'login' %}">Logout</div>
+    </div>
+
+    <div class="main-content">
+        <div class="header">
+            <div class="search">
+                <img src="search-removebg-preview.png" alt="Search" width="24" height="24">
+                <input type="text" placeholder="Search...">
+            </div>
+            <div class="profile-menu">
+                <div>Hai, Admin</div>
+                <img src="icon_profil-removebg-preview.png" alt="Profile">
+                <div class="profile-dropdown">
+                    <a href="#">Profile</a>
+                </div>
+            </div>
+        </div>
+        <div class="content">
+            <h2>Request Dataset</h2>
+            <div class="form-group">
+                <label for="description-problem">Description problem</label>
+                <input type="text" id="description-problem">
+            </div>
+            <div class="form-group">
+                <label for="description-target">Description Target</label>
+                <input type="text" id="description-target">
+            </div>
+            <div class="form-group">
+                <label for="description-features">Description Features</label>
+                <input type="text" id="description-features">
+            </div>
+            <div class="form-group-inline">
+                <div class="form-group">
+                    <label for="category">Category</label>
+                    <select id="category">
+                        <option>--Category--</option>
+                        <option value="regresi">Regresi</option>
+                        <option value="klasifikasi">Klasifikasi</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="start-date">Start Date</label>
+                    <input type="date" id="start_" required />
+                </div>
+                <div class="form-group">
+                    <label for="end-date">End Date</label>
+                    <input type="date" id="end_" required />
+                </div>
+                <div class="form-group">
+                    <label for="status">Status</label>
+                    <select id="status">
+                        <option>--Status--</option>
+                        <option value="ongoing">On-going</option>
+                        <option value="success">Success</option>
+                        <option value="failed">Failed</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="notes">Notes</label>
+                <textarea id="notes" rows="5" placeholder="Masukan Notes Anda Disini"></textarea>
+            </div>
+            <div class="form-actions">
+                <button class="btn-cancel">Cancel</button>
+                <button class="btn-save">Save Changes</button>
+            </div>
+        </div>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const menuItems = document.querySelectorAll('.sidebar li:not(.has-dropdown)');
+            const dropdownMenu = document.getElementById('request-menu');
+            const requestDropdown = document.getElementById('request-dropdown');
+            const requestDataset = document.querySelector('[data-page="requestdataset.html"]');
+            const confirmPage = document.querySelector('[data-page="confirmation.html"]');
+            const historyPage = document.querySelector('[data-page="history.html"]');
+            const logout = document.querySelector('.logout');
+            const saveButton = document.querySelector('.btn-save');
+            const cancelButton = document.querySelector('.btn-cancel');
+            const notes = document.getElementById('notes');
+
+            menuItems.forEach(item => {
+                item.addEventListener('click', function () {
+                    menuItems.forEach(i => i.classList.remove('active'));
+                    item.classList.add('active');
+                    const page = item.getAttribute('data-page');
+                    if (page) {
+                        window.location.href = page;
+                    }
+                });
+            });
+
+            dropdownMenu.addEventListener('click', function () {
+                requestDropdown.style.display = requestDropdown.style.display === 'none' ? 'block' : 'none';
+            });
+
+            document.querySelectorAll('.sidebar .has-dropdown .dropdown li').forEach(subItem => {
+                subItem.addEventListener('click', function (e) {
+                    const page = subItem.getAttribute('data-page');
+                    if (page) {
+                        window.location.href = page;
+                    }
+                    e.stopPropagation();
+                });
+            });
+
+            document.addEventListener('click', function (e) {
+                if (!dropdownMenu.contains(e.target)) {
+                    requestDropdown.style.display = 'none';
+                }
+            });
+
+            if (requestDataset) {
+                requestDataset.addEventListener('click', function () {
+                    window.location.href = 'Request dataset.html';
+                });
+            }
+
+            if (confirmPage) {
+                confirmPage.addEventListener('click', function () {
+                    window.location.href = 'confirm.html';
+                });
+            }
+
+            if (historyPage) {
+                historyPage.addEventListener('click', function () {
+                    window.location.href = 'History.html';
+                });
+            }
+
+            if (logout) {
+                logout.addEventListener('click', function () {
+                    window.location.href = 'logout.html';
+                });
+            }
+
+            saveButton.addEventListener('click', function () {
+                const descriptionProblem = document.getElementById('description-problem').value;
+                const descriptionTarget = document.getElementById('description-target').value;
+                const descriptionFeatures = document.getElementById('description-features').value;
+                const category = document.getElementById('category').value;
+                const startDate = document.getElementById('start_').value;
+                const endDate = document.getElementById('end_').value;
+                const status = document.getElementById('status').value;
+                const notesValue = notes.value;
+
+                console.log({
+                    descriptionProblem,
+                    descriptionTarget,
+                    descriptionFeatures,
+                    category,
+                    startDate,
+                    endDate,
+                    status,
+                    notesValue
+                });
+
+                fetch('your-server-endpoint', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        descriptionProblem,
+                        descriptionTarget,
+                        descriptionFeatures,
+                        category,
+                        startDate,
+                        endDate,
+                        status,
+                        notes: notesValue
+                    })
+                }).then(data => {
+                    console.log('Success:', data);
+                    window.location.href = 'history.html';
+                }).catch((error) => {
+                    console.error('Error:', error);
+                    alert('There was an error saving your data. Please try again.');
+                });
+            });
+
+            cancelButton.addEventListener('click', function () {
+                window.location.href = 'dashboard.html';
+            });
+        });
+    </script>
+</body>
+<style>
+    body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    display: flex;
+    height: 105vh;
+    background-color: #DFDFDF;
+}
+
+.sidebar {
+    width: 230px;
+    height: 100vh;
+    background-color: #1A0732;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    padding-top: 20px;
+}
+
+.sidebar img {
+    width: 40px;
+    height: auto;
+}
+.sidebar h1 {
+    font-size: 1.5rem;
+    margin: 0;
+    text-align: center;
+}
+.sidebar ul {
+    list-style: none;
+    padding: 0;
+    width: 100%;
+}
+.sidebar li {
+    padding: 30px 30px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+.sidebar ul li:hover {
+    background-color: #574b90;
+}
+.sidebar .logout {
+    margin-top: auto;
+    padding: 15px 20px;
+    cursor: pointer;
+    text-align: center;
+    background-color: #1A0732;
+    transition: background-color 0.3s;
+}
+.sidebar .logout:hover {
+    background-color: #2F54EB;
+}
+.main-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    background-color: #EFEFEF;
+}
+
+.header {
+    height: 60px;
+    background-color: #1A0732;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px;
+}
+
+.header .profile-menu {
+    position: relative;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+}
+
+.header .profile-menu img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin-left: 10px;
+}
+
+.header .profile-dropdown {
+    display: none;
+    position: absolute;
+    top: 60px;
+    right: 0;
+    background-color: white;
+    color: black;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    overflow: hidden;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.header .profile-dropdown.show {
+    display: block;
+}
+
+.header .profile-dropdown a {
+    display: block;
+    padding: 10px 20px;
+    text-decoration: none;
+    color: rgb(255, 255, 255);
+    background-color: #1A0732;
+}
+
+.header .profile-dropdown a:hover {
+    background-color: #fffefe;
+    color: #1A0732;
+}
+
+.header .search {
+    display: flex;
+    align-items: center;
+}
+
+.header .search svg {
+    margin-right: 10px;
+}
+
+.header input {
+    padding: 10px;
+    border: none;
+    border-radius: 20px;
+    outline: none;
+    width: 400px;
+    height: 20px;
+    background-color: #fff;
+}
+
+.content {
+    flex: 1;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    background-color: white;
+    border-radius: 10px;
+    margin: 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    width: 90%;
+    margin-left: 50px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.form-group label {
+    font-weight: bold;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    width: 90%;
+}
+
+.form-group textarea {
+    resize: none;
+    background-color: #D9D9D9;
+    width: 700px;
+    height: 80px;
+}
+
+.form-group-inline {
+    display: flex;
+    justify-content: space-between;
+}
+
+.form-group-inline .form-group {
+    flex: 1;
+}
+
+.form-group-photo {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border: 2px dashed #ddd;
+    border-radius: 10px;
+    padding: 20px;
+    text-align: center;
+    margin-top: 30px;
+}
+
+.form-group-photo img {
+    width: 50px;
+    height: 50px;
+    margin-bottom: 10px;
+}
+
+.form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 20px;margin-top: 40px;
+
+}
+
+.form-actions button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.form-actions .btn-cancel {
+    background-color: #ddd;
+    color: black;
+    margin-top: 20px;
+}
+
+.form-actions .btn-save {
+    background-color: #2F54EB;
+    color: white;
+    margin-top: 20px;
+}
+
+.form-actions .btn-cancel:hover {
+    background-color: #ccc;
+}
+
+.form-actions .btn-save:hover {
+    background-color: #1A44D1;
+}
+
+input {
+    background-color: #D9D9D9;
+    width: 500px;
+}
+
+input#start_,input#end_ {
+    background-color: #fff;
+    width: 200px;
+}
+
+label {
+    margin-top: 10px;
+}
+
+h2 {
+    margin-top: -10px;
+    background-color: #1A0732;
+    color: #fff;
+    height: 50px;
+    border-radius: 5px;
+}
+
+img {
+    width: 40px;
+    height: 40px;
+}
+
+div.form-group-inline div.form-group {
+    flex: 1;
+    margin-bottom: 10px;
+}
+
+input#status-connection{
+    width: 50%;
+}
+select#category,
+select#status
+{
+    width: 60%;
+    margin-right: 30px;
+}
+
+textarea#notes{
+    width: 80%;
+}
+
+</style>
+</html>

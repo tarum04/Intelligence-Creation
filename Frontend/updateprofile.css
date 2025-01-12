@@ -1,0 +1,188 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #DFDFDF;
+    margin: 0;
+    padding: 0;
+    color: #333;
+}
+
+.sidebar {
+    width: 250px;
+    background-color: #1A0732;
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    color: #fff;
+    padding-top: 20px;
+}
+
+.sidebar h1 {
+    text-align: center;
+    margin: 0;
+    padding: 10px 0;
+}
+
+.sidebar ul {
+    list-style: none;
+    padding: 0;
+    width: 100%;
+}
+
+.sidebar ul {
+    padding: 10px 20px;
+    cursor: pointer;
+}
+
+.sidebar li {
+    padding: 30px 30px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.sidebar ul li:hover {
+    background-color: #574b90;
+}
+
+.sidebar ul li.has-dropdown ul {
+    display: none;
+    padding-left: 20px;
+}
+
+.sidebar ul li.has-dropdown:hover ul {
+    display: block;
+}
+
+.sidebar .logout {
+    padding: 10px 52px;
+    cursor: pointer;
+    background-color: #1A0732;
+    position: absolute;
+    bottom: 20px;
+    width: 50%;
+}
+
+.sidebar .logout:hover {
+    background-color: #574b90;
+}
+
+.main-content {
+    margin-left: 250px;
+    padding: 20px;
+}
+
+.header {
+    height: 60px;
+    background-color: #1A0732;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px;
+    position: fixed;
+    width: calc(100% - 250px); /* menyesuaikan lebar header */
+    left: 250px; /* menempel dengan sidebar */
+    top: 0;
+    z-index: 1000; /* memastikan header tetap di atas konten lainnya */
+}
+
+.header .search-bar {
+    display: flex;
+    align-items: center;
+}
+
+.header .search-bar input {
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 5px;
+}
+
+.header .right-icons {
+    display: flex;
+    align-items: center;
+}
+
+.header .right-icons i {
+    margin-left: 20px;
+    cursor: pointer;
+}
+
+.header .user-info {
+    display: flex;
+    align-items: center;
+}
+
+.header .user-info img {
+    border-radius: 50%;
+    margin-left: 10px;
+}
+
+.profile-container {
+    background-color: #fff;
+    padding: 20px;
+    margin-top: 80px; /* memberi ruang untuk header yang fixed */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    width: 90%;
+    margin-left: 5%;
+}
+
+.profile-card {
+    padding: 20px;
+}
+
+.profile-header {
+    display: flex;
+    align-items: center;
+}
+
+.profile-header img {
+    border-radius: 50%;
+    margin-right: 20px;
+}
+
+.profile-info h3 {
+    margin: 0;
+}
+
+.profile-actions {
+    margin-left: auto;
+}
+
+.profile-actions button {
+    margin-left: 10px;
+    padding: 10px 20px;
+    border: none;
+    cursor: pointer;
+    border-radius: 4px;
+    background-color: #333;
+    color: #fff;
+}
+
+.form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+}
+
+.form-actions button {
+    padding: 10px 20px;
+    border: none;
+    cursor: pointer;
+    border-radius: 4px;
+}
+
+.form-actions .cancel {
+    background-color: #f44336;
+    color: white;
+}
+
+.form-actions .save {
+    background-color: #4CAF50;
+    color: white;
+}
+
+img {
+    width: 40px;
+    height: 40px;
+}
